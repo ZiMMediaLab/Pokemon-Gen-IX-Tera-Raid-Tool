@@ -2,12 +2,32 @@
 
 A Tera Raid helper for Pokémon Scarlet and Violet. Pick a raid boss, its star level, and the Tera type on the crystal, and it ranks counters that hit the Tera type super effectively **without** being weak to the moves the boss actually uses.
 
-Works offline and installs to a phone home screen.
+[![PWA Live](https://img.shields.io/badge/LIVE-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://zimmedialab.github.io/tera-raid-counters/)
+
+### [**Launch Raid Counters 🚀**](https://zimmedialab.github.io/tera-raid-counters/)
+
+No download needed. It runs in any browser, works offline after the first visit, and can be installed to your desktop or phone home screen.
+
+<details>
+<summary><b>📲 How to install it on desktop &amp; phone (click to expand)</b></summary>
+
+<br>
+
+| Device | Browser | Steps |
+| :--- | :--- | :--- |
+| 🖥️ Windows / Mac / Linux | **Chrome** | **⋮** menu → **Cast, save, and share** → **Install page as app** |
+| 🖥️ Windows / Mac / Linux | **Edge** | Click the **App available** icon in the address bar → **Install** |
+| 🍎 Mac (Sonoma or later) | **Safari** | **File** → **Add to Dock** |
+| 🤖 Android | **Chrome** | **⋮** menu → **Add to home screen** → **Install** |
+| 📱 iPhone / iPad | **Safari** | **Share** button → **Add to Home Screen** |
+
+</details>
 
 ## Features
 
 - Every standard raid (1★–6★, Paldea, Kitakami, Blueberry Academy), distribution raids, and 7★ events
 - Counters ranked by three things: damage against the boss's Tera type, how they take each of the boss's four moves, and bulk on the side the boss attacks
+- Boss abilities taken into account: Sap Sipper, Levitate, Flash Fire and similar block the matching attack type unless the build carries Gastro Acid or Mold Breaker
 - Tiers: clean picks first, 2× weak picks only when needed, 4× weak picks hidden away
 - **Raid builds** (curated sets) or **All Pokémon** mode, with box legendaries behind a toggle
 - Support picks and a game plan for solo, 2-, 3- and 4-player groups, accounting for NPC slots
@@ -35,7 +55,7 @@ npm install
 npm run build-data
 ```
 
-After any change to files in `docs/`, bump `CACHE` in `docs/sw.js` (`raid-counters-v1` → `v2`) so installed copies pick up the update.
+After any change to files in `docs/`, bump `CACHE` in `docs/sw.js` (for example `raid-counters-v3` → `v4`) so installed copies pick up the update.
 
 To add new raids after a game update, replace the `.pkl` files in `data/raw/` with the latest versions from PKHeX (`PKHeX.Core/Resources/legality/wild/Gen9/`) and rebuild.
 

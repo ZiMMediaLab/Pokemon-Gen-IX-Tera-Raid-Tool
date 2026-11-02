@@ -1,5 +1,5 @@
 // Bump this whenever any cached file changes so phones pick up the new version.
-const CACHE = 'raid-counters-v2';
+const CACHE = 'raid-counters-v3';
 
 const ASSETS = [
   './',
@@ -31,10 +31,18 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Cache-first so the app works offline mid-raid; the cache name bump handles updates.
+// Network-first so updates show up on the next load; the cache only answers when offline.
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request, { ignoreSearch: true }).then(hit => hit ?? fetch(event.request))
+    fetch(event.request)
+      .then(response => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE).then(cache => cache.put(event.request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request, { ignoreSearch: true }))
   );
 });
