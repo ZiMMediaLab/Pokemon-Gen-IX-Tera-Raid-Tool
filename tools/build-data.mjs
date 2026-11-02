@@ -38,6 +38,14 @@ function teraFromGem(gem) {
   return TYPES[gem - 2] ?? null;
 }
 
+// Ability byte: 0 = slot 1 or 2, 1 = any slot, 2/3/4 = locked to slot 1/2/hidden.
+function readAbilities(species, value) {
+  const slots = { 0: ['0', '1'], 1: ['0', '1', 'H'], 2: ['0'], 3: ['1'], 4: ['H'] }[value];
+  if (!slots) throw new Error(`Unknown ability value ${value}`);
+  const names = slots.map(slot => species.abilities[slot] ?? species.abilities['0']);
+  return [...new Set(names)];
+}
+
 function readMoves(buf, offset) {
   const moves = [];
   for (let i = 0; i < 4; i++) {
@@ -59,6 +67,7 @@ function readTable(file, recordSize, source) {
       species: species.id,
       level: buf[off + 7],
       moves: readMoves(buf, off),
+      abilities: readAbilities(species, buf[off + 4]),
       tera: teraFromGem(buf[off + 0x10]),
       stars: buf[off + 0x12],
       source,
@@ -91,6 +100,7 @@ for (const row of tables) {
   if (existing) {
     existing.scarlet ||= row.scarlet;
     existing.violet ||= row.violet;
+    existing.abilities = [...new Set([...existing.abilities, ...row.abilities])];
     if (!existing.sources.includes(row.source)) existing.sources.push(row.source);
     continue;
   }

@@ -1,3 +1,5 @@
+import { blockedTypes } from './types.js';
+
 const STATUS_NAMES = { brn: 'burn', par: 'paralysis', slp: 'sleep', psn: 'poison', tox: 'bad poison', frz: 'freeze' };
 
 export function buildStrategy(boss, partySize, counters, supports) {
@@ -49,6 +51,14 @@ function bossTips(boss, partySize, npcs) {
     tips.push('Mostly special attacks. Light Screen and high Sp. Def counters cut its damage the most.');
   } else if (boss.attacks.length) {
     tips.push('Mixed physical and special attacks. Screens help more than raw Defense or Sp. Def alone.');
+  }
+
+  const blocking = boss.abilities.map(a => ({ ability: a, types: blockedTypes(a) })).filter(b => b.types.length);
+  for (const b of blocking) {
+    const types = b.types.join(' and ');
+    tips.push(boss.abilityLocked
+      ? `${b.ability} blocks ${types} moves, so ${types} attackers only work if they strip the ability first with Gastro Acid or ignore it with Mold Breaker.`
+      : `It might have ${b.ability}, which blocks ${types} moves. Bring a backup attacker if you plan to use ${types}.`);
   }
 
   if (boss.setupMoves.length) {

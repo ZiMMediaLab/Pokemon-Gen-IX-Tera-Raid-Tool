@@ -1,7 +1,11 @@
-import { effectiveness } from './types.js';
+import { effectiveness, abilityModifier } from './types.js';
 
 const FIXED_DAMAGE_POWER = 60;
 const MIN_BST_ALL_MODE = 420;
+
+// Ways a counter can get past a boss ability that would block its attack.
+const ABILITY_BYPASS_MOVES = ['Gastro Acid'];
+const ABILITY_BYPASS_ABILITIES = ['Mold Breaker', 'Teravolt', 'Turboblaze'];
 
 export function analyzeBoss(raid, tera, data) {
   const mon = data.pokemon[raid.species];
@@ -23,6 +27,8 @@ export function analyzeBoss(raid, tera, data) {
     originalTypes,
     defendTypes,
     tera,
+    abilities: raid.abilities,
+    abilityLocked: raid.abilities.length === 1,
     moves,
     attacks,
     physicalShare,
@@ -51,7 +57,8 @@ export function evaluate(candidate, boss, data) {
   const mon = data.pokemon[candidate.species];
   const { type, cat } = candidate.attack;
 
-  const offenseMult = effectiveness(type, boss.defendTypes);
+  const typeMult = effectiveness(type, boss.defendTypes);
+  const { offenseMult, abilityRisk, abilityBypass } = applyBossAbility(candidate, boss, type, typeMult);
   let stat = cat === 'Physical' ? mon.stats.atk : mon.stats.spa;
   if (candidate.ability === 'Huge Power' || candidate.ability === 'Pure Power') stat *= 2;
   const offense = offenseMult * attackerStab(type, mon.types, candidate.tera) * stat;
@@ -86,8 +93,30 @@ export function evaluate(candidate, boss, data) {
     weaknesses,
     immunities,
     resistsAll: hits.length > 0 && worst < 1,
-    tier: tierFor(offenseMult, worst),
+    abilityRisk,
+    abilityBypass,
+    tier: tierFor(offenseMult, worst, abilityRisk),
   };
+}
+
+// A locked ability is applied outright. A random one only warns, since the boss may not have it.
+function applyBossAbility(candidate, boss, attackType, typeMult) {
+  const hindering = boss.abilities.filter(a => abilityModifier(a, attackType) < 1);
+  if (!hindering.length) {
+    const boost = boss.abilityLocked ? abilityModifier(boss.abilities[0], attackType) : 1;
+    return { offenseMult: typeMult * boost, abilityRisk: null, abilityBypass: null };
+  }
+
+  const bypass = candidate.moves?.find(m => ABILITY_BYPASS_MOVES.includes(m))
+    ?? (ABILITY_BYPASS_ABILITIES.includes(candidate.ability) ? candidate.ability : null);
+  if (bypass) {
+    return { offenseMult: typeMult, abilityRisk: null, abilityBypass: { by: bypass, ability: hindering[0] } };
+  }
+
+  if (boss.abilityLocked) {
+    return { offenseMult: typeMult * abilityModifier(boss.abilities[0], attackType), abilityRisk: null, abilityBypass: null };
+  }
+  return { offenseMult: typeMult, abilityRisk: hindering, abilityBypass: null };
 }
 
 function dedupeByType(hits) {
@@ -100,11 +129,11 @@ function dedupeByType(hits) {
   return [...byType.values()].sort((a, b) => b.mult - a.mult);
 }
 
-function tierFor(offenseMult, worst) {
-  if (offenseMult >= 2 && worst <= 1) return 'clean';
-  if (offenseMult >= 2 && worst === 2) return 'risky';
+function tierFor(offenseMult, worst, abilityRisk) {
+  if (offenseMult >= 2 && worst <= 1 && !abilityRisk) return 'clean';
+  if (offenseMult >= 2 && worst < 4) return 'risky';
   if (offenseMult >= 2) return 'danger';
-  if (offenseMult === 1 && worst <= 1) return 'neutral';
+  if (offenseMult >= 1 && worst <= 1 && !abilityRisk) return 'neutral';
   return null;
 }
 

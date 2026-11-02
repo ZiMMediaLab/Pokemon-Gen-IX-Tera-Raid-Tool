@@ -176,3 +176,4 @@ footer p { margin: 4px 0; }
 footer .fine { opacity: .75; }
 
 .empty { color: var(--muted); font-size: .9rem; margin: 0; }
+.boss .row .tier-note { margin: 0; }

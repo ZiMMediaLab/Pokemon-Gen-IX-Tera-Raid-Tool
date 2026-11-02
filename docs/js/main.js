@@ -302,6 +302,7 @@ function renderBoss(boss, raid) {
     <div class="row"><span class="label">Types</span>${boss.originalTypes.map(typeChip).join(' ')}</div>
     <div class="row"><span class="label">Tera</span>${typeChip(boss.tera)} <span class="tier-note">${raid.tera ? 'fixed for this raid' : 'from the crystal'}</span></div>
     <div class="row"><span class="label">Defends as</span>${boss.defendTypes.map(typeChip).join(' ')}</div>
+    <div class="row"><span class="label">Ability</span>${escapeHtml(boss.abilities.join(' / '))} <span class="tier-note">${boss.abilityLocked ? 'always' : 'one of these'}</span></div>
     <ul class="move-list">${moves}</ul>`;
 }
 
@@ -350,6 +351,12 @@ function counterList(list, limit) {
 function counterCard(c) {
   const badges = [];
   badges.push(`<span class="badge good">${c.offenseMult}× damage</span>`);
+  if (c.abilityBypass) {
+    badges.push(`<span class="badge good">${escapeHtml(c.abilityBypass.by)} gets past ${escapeHtml(c.abilityBypass.ability)}</span>`);
+  }
+  if (c.abilityRisk) {
+    badges.push(`<span class="badge warn">Blocked if it has ${escapeHtml(c.abilityRisk.join(' or '))}</span>`);
+  }
   badges.push(...defensiveBadges(c));
 
   const build = c.moves

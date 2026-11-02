@@ -1,5 +1,5 @@
 // Bump this whenever any cached file changes so phones pick up the new version.
-const CACHE = 'raid-counters-v1';
+const CACHE = 'raid-counters-v2';
 
 const ASSETS = [
   './',
