@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Raid Counters</title>
+  <meta name="description" content="Find Tera Raid counters for Pokémon Scarlet and Violet that hit hard without being weak to the boss.">
+  <meta name="theme-color" content="#12101c">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img class="brand-mark" src="icons/icon.svg" alt="" width="40" height="40">
+      <div>
+        <h1>Raid Counters</h1>
+        <p class="sub">Scarlet &amp; Violet Tera Raids</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" aria-labelledby="pick-title">
+      <h2 id="pick-title" class="step"><span>1</span> Pick the raid</h2>
+
+      <div class="stars" id="starFilter" role="group" aria-label="Star level"></div>
+
+      <div class="search">
+        <input id="search" type="search" placeholder="Search a raid Pokémon…" autocomplete="off" spellcheck="false" aria-controls="suggestions">
+        <ul id="suggestions" class="suggestions" role="listbox" hidden></ul>
+      </div>
+
+      <div id="variants" class="variants" hidden></div>
+    </section>
+
+    <section class="panel" id="teraPanel" hidden aria-labelledby="tera-title">
+      <h2 id="tera-title" class="step"><span>2</span> Tera type on the crystal</h2>
+      <div id="teraGrid" class="type-grid" role="group" aria-label="Tera type"></div>
+    </section>
+
+    <section class="panel" id="partyPanel" hidden aria-labelledby="party-title">
+      <h2 id="party-title" class="step"><span>3</span> Players in your group</h2>
+      <div class="segmented" id="partySize" role="group" aria-label="Number of players">
+        <button type="button" data-size="1">Solo</button>
+        <button type="button" data-size="2">2</button>
+        <button type="button" data-size="3">3</button>
+        <button type="button" data-size="4">4</button>
+      </div>
+    </section>
+
+    <section id="results" hidden>
+      <article class="panel boss" id="bossCard"></article>
+
+      <section class="panel" aria-labelledby="counters-title">
+        <div class="panel-head">
+          <h2 id="counters-title">Counters</h2>
+          <div class="segmented small" id="poolMode" role="group" aria-label="Counter pool">
+            <button type="button" data-mode="curated">Raid builds</button>
+            <button type="button" data-mode="all">All Pokémon</button>
+          </div>
+        </div>
+        <label class="check" id="legendaryToggle" hidden>
+          <input type="checkbox" id="includeLegendaries"> Include box legendaries &amp; mythicals
+        </label>
+        <div id="counters"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="support-title">
+        <h2 id="support-title">Support picks</h2>
+        <div id="supports"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="plan-title">
+        <h2 id="plan-title">Game plan</h2>
+        <div id="plan"></div>
+      </section>
+
+      <button type="button" class="share" id="shareBtn">Copy link to this raid</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>ZiMMedia Lab</p>
+    <p class="fine">Raid data from PKHeX encounter tables · Pokémon and move data from Pokémon Showdown. Pokémon is © Nintendo, Creatures Inc. and GAME FREAK inc. This is an unofficial fan tool.</p>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
