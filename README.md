@@ -2,9 +2,9 @@
 
 A Tera Raid helper for Pokémon Scarlet and Violet. Pick a raid boss, its star level, and the Tera type on the crystal, and it ranks counters that hit the Tera type super effectively **without** being weak to the moves the boss actually uses.
 
-[![PWA Live](https://img.shields.io/badge/LIVE-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://zimmedialab.github.io/tera-raid-counters/)
+[![PWA Live](https://img.shields.io/badge/LIVE-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://zimmedialab.github.io/Pokemon-Gen-IX-Tera-Raid-Tool/)
 
-### [**Launch Raid Counters 🚀**](https://zimmedialab.github.io/tera-raid-counters/)
+### [**Launch Raid Counters 🚀**](https://zimmedialab.github.io/Pokemon-Gen-IX-Tera-Raid-Tool/)
 
 No download needed. It runs in any browser, works offline after the first visit, and can be installed to your desktop or phone home screen.
 
