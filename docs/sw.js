@@ -1,5 +1,5 @@
 // Bump this whenever any cached file changes so phones pick up the new version.
-const CACHE = 'raid-counters-v3';
+const CACHE = 'raid-counters-v4';
 
 const ASSETS = [
   './',
@@ -17,6 +17,8 @@ const ASSETS = [
   'icons/icon.svg',
   'icons/icon-192.png',
   'icons/icon-512.png',
+  'icons/icon-maskable-512.png',
+  'icons/apple-touch-icon.png',
 ];
 
 self.addEventListener('install', event => {
