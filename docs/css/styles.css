@@ -72,7 +72,10 @@ h3 { margin: 18px 0 8px; font-size: .95rem; }
 .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
 .panel-head h2 { margin: 0; }
 
-.step { display: flex; align-items: center; gap: 10px; }
+main { counter-reset: step; }
+/* Numbers come from a counter so hidden steps (e.g. a raid with a fixed Tera type) never leave a gap. */
+.step { display: flex; align-items: center; gap: 10px; counter-increment: step; }
+.step span::before { content: counter(step); }
 .step span {
   display: inline-grid; place-items: center;
   width: 26px; height: 26px; border-radius: 9px;
